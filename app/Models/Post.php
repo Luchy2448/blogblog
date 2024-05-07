@@ -9,6 +9,15 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'slug',
+        'body',
+        'excerpt',
+        'category_id',
+        'user_id',
+    ];
+
     //RELACION UNO A MUCHOS INVERSA CON USER
     public function user(){
         return $this->belongsTo(User::class);
