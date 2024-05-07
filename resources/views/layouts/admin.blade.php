@@ -18,6 +18,8 @@
         {{-- SWEET ALERT 2 --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        @stack('css')
+
         <!-- Styles -->
         @livewireStyles
     </head>
@@ -51,5 +53,7 @@
                     Swal.fire(@json(session('swal')))
             </script>
         @endif
+
+    @stack('js')    
     </body>
 </html>

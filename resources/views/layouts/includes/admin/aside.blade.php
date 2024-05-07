@@ -6,11 +6,12 @@
               'active' => request()->routeIs('admin.dashboard'),
               'icon' => 'fa-solid fa-gauge-high'
           ],
-         //  [
-         //      'name' => 'Articulos',
-         //      'url' => route('dashboard'),
-         //      'active' => false
-         //  ]
+          [
+              'name' => 'Catogorías',
+              'url' => route('admin.categories.index'),
+              'active' => request()->routeIs('admin.categories.*'),
+              'icon' => 'fa-solid fa-list'
+          ]
       ]
     
 @endphp
@@ -27,7 +28,7 @@
        <ul class="space-y-2 font-medium">
           @foreach ($links as $link)
             <li>
-               <a :href="$link['url']" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
+               <a href="{{ $link['url'] }}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {{ $link['active'] ? 'bg-gray-100 dark:bg-gray-700' : '' }}">
                 
                   <i class="{{ $link['icon'] }} w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                   <span class="ml-3">{{ $link['name'] }}</span>

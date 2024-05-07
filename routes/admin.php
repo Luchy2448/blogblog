@@ -1,16 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
 
-    // session()->flash('swal', 
-    // [
-    //     'type' => 'success',
-    //     'icon' => 'success',
-    //     'title' => 'Welcome!',
-    //     'text' => 'You are logged in!'
-    // ]);
 
     return view('admin.dashboard');
-})->name('admin.dashboard');
+})->name('dashboard');
+
+//Caregories
+// Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+// Route::post('/categories', [CategoryController::class, 'create'])->name('categories.create');
+// Route::match(['get', 'post'], '/categories/{category}', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::resource('/categories', CategoryController::class)
+               ->except('show');
