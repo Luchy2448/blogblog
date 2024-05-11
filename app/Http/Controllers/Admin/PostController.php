@@ -39,13 +39,8 @@ class PostController extends Controller
             'slug' => 'required|unique:posts',
             'category_id' => 'required|exists:categories,id',
         ]);
-        $post = Post::create([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'category_id' => $request->category_id,
-            // 'user_id' => auth()->user()->id este o el de abajo
-            'user_id' => auth()->id()
-        ]);
+        $post = Post::create($request->all());
+
         session()->flash('swal', [
             'icon' => 'success',
             'title' => '¡Bien hecho!',
@@ -59,8 +54,8 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
-    {
-        return view('admin.posts.edit', compact('post'));
+    {   $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -69,13 +64,37 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+        // return  dd($request->all());
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required|unique:posts,slug,' . $post->id,
+            //si el campo published es true, el campo excerpt es obligatorio sino es opcional
+            'excerpt' => $request->published ? 'required' : 'nullable',
+            'body' =>  $request->published ? 'required' : 'nullable',
+            'published' => 'required|boolean',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+        $post->update($request->all());
+    
+    session()->flash('swal', [
+        'icon' => 'success',
+        'title' => '¡Bien hecho!',
+        'text' => 'El artículo se actualizó correctamente',
+    ]);
+        return redirect()->route('admin.posts.index', $post);
     }
-
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => '¡Bien hecho!',
+            'text' => 'El post se eliminó correctamente',
+        ]);
+        return redirect()->route('admin.posts.index');
     }
 }

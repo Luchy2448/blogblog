@@ -17,6 +17,7 @@ class Post extends Model
         'excerpt',
         'category_id',
         'user_id',
+        'published',
     ];
     //manipulación del titulo
 
