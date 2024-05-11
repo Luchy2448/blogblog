@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -55,7 +56,10 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {   $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+
+
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -74,6 +78,8 @@ class PostController extends Controller
             'published' => 'required|boolean',
             'category_id' => 'required|exists:categories,id',
         ]);
+        $post->tags()->sync($request->tags);
+
         $post->update($request->all());
     
     session()->flash('swal', [
