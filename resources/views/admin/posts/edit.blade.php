@@ -61,11 +61,10 @@
                 Etiquetas
             </x-label>
             <select class="tag-multiple" name="tags[]" multiple="multiple" style="width: 100%">
-                @foreach ($tags as $tag)
-                    <option value="{{ $tag->id }}"
-                        {{-- @selected($post->tags->contains($tag->id)) --}}
-                        @selected(collect(old('tags', $post->tags->pluck('id')))->contains($tag->id))
-                    >{{ $tag->name }}</option>
+                @foreach ($post->tags as $tag)
+                    <option value="{{ $tag->id }}" selected>
+                        {{ $tag->name }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -120,7 +119,23 @@
      
      <script>
         $(document).ready(function() {
-    $('.tag-multiple').select2();
+    $('.tag-multiple').select2({
+        ajax: {
+            url: "{{ route('api.tags.index') }}",
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: data
+                }
+            },
+        }
+    });
         });
      </script>
      <script>
