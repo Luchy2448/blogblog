@@ -62,7 +62,7 @@
             </x-label>
             <select class="tag-multiple" name="tags[]" multiple="multiple" style="width: 100%">
                 @foreach ($post->tags as $tag)
-                    <option value="{{ $tag->id }}" selected>
+                    <option value="{{ $tag->name }}" selected>
                         {{ $tag->name }}
                     </option>
                 @endforeach
@@ -120,6 +120,8 @@
      <script>
         $(document).ready(function() {
     $('.tag-multiple').select2({
+        tags: true, // allow create new tags
+        tokenSeparators: [',', ' '], 
         ajax: {
             url: "{{ route('api.tags.index') }}",
             dataType: 'json',

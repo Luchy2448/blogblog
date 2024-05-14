@@ -67,7 +67,8 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
-        // return  dd($request->all());
+
+        // return  $request->tags;
         $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:posts,slug,' . $post->id,
@@ -76,8 +77,21 @@ class PostController extends Controller
             'body' =>  $request->published ? 'required' : 'nullable',
             'published' => 'required|boolean',
             'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|array',
         ]);
-        $post->tags()->sync($request->tags);
+        $tags = [];
+
+        foreach($request->tags ?? [] as $name) // ?? [] si no hay tags, el array es vacío
+        {
+            $tag = Tag::firstOrCreate([
+                'name' => $name
+            ]);
+            $tags[] = $tag->id;
+        }
+
+        // return $tags;
+
+        $post->tags()->sync($tags);
 
         $post->update($request->all());
     
