@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -66,9 +67,9 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        //return  $request->all();
 
-        // return  $request->tags;
+       
         $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:posts,slug,' . $post->id,
@@ -78,7 +79,10 @@ class PostController extends Controller
             'published' => 'required|boolean',
             'category_id' => 'required|exists:categories,id',
             'tags' => 'nullable|array',
+            'image' => 'nullable|image',
         ]);
+        $data = $request->all();
+
         $tags = [];
 
         foreach($request->tags ?? [] as $name) // ?? [] si no hay tags, el array es vacío
@@ -93,14 +97,21 @@ class PostController extends Controller
 
         $post->tags()->sync($tags);
 
-        $post->update($request->all());
+        if($request->file('image')){
+            if($post->image_path){
+                Storage::delete($post->image_path);
+            }
+           $data['image_path'] = Storage::put('posts', $request->image);
+        }
+
+        $post->update($data);
     
     session()->flash('swal', [
         'icon' => 'success',
         'title' => '¡Bien hecho!',
         'text' => 'El artículo se actualizó correctamente',
     ]);
-        return redirect()->route('admin.posts.index', $post);
+        return redirect()->route('admin.posts.edit', $post);
     }
     /**
      * Remove the specified resource from storage.

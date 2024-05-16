@@ -2,12 +2,34 @@
     @push('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @endpush
-    <form action="{{ route('admin.posts.update', $post) }}" method="POST">
+    <form action="{{ route('admin.posts.update', $post) }}" 
+    method="POST"
+    enctype="multipart/form-data">
+    
     @csrf
     @method('PUT')
 
     <x-validation-errors class="mb-4"/>
-       
+        <div class="mb-6 relative">
+            <figure>
+                <img class="aspect-[16/9] object-cover object-center rounded-sm w-full" 
+                src="{{ $post->image }}" 
+                alt=""
+                id="imgPreview">
+            </figure>  
+            <div class="absolute top-8 right-8 bg-gray-900 bg-opacity-40 rounded-sm">
+                <label class=" border-gray-600 border-2 bg-white text-gray-900 font-semibold px-4 py-2 rounded-lg cursor-pointer">
+                    <i class="fa-solid fa-camera mr-2"></i>
+                    Actualizar imagen
+                    <input type="file" 
+                    accept="image/*" 
+                    name="image" 
+                    class="hidden"
+                    onchange="previewImage(event, '#imgPreview')">
+                </label>
+            </div>
+        </div>
+        
         <div class="mb-4">
             <x-label class="mb-1">
                 TÍtulo
@@ -147,6 +169,31 @@
              form.submit();
          }
  
+     </script>
+
+
+     <script>
+        function previewImage(event, querySelector){
+
+            //Recuperamos el input que desencadeno la acción
+            const input = event.target;
+
+            //Recuperamos la etiqueta img donde cargaremos la imagen
+            $imgPreview = document.querySelector(querySelector);
+
+            // Verificamos si existe una imagen seleccionada
+            if(!input.files.length) return
+
+            //Recuperamos el archivo subido
+            file = input.files[0];
+
+            //Creamos la url
+            objectURL = URL.createObjectURL(file);
+
+            //Modificamos el atributo src de la etiqueta img
+            $imgPreview.src = objectURL;
+                    
+        }
      </script>
    @endpush
 </x-admin-layout>
