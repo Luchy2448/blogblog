@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,4 +26,11 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+Route::get('prueba', function(){
+    $path = "posts/articulo-de-prueba.png";
+    if(Storage::exists($path)){
+      $path = str_replace('.png', '-copia.png', $path);
+    }
+    return $path;
 });
