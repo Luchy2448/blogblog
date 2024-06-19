@@ -71,7 +71,7 @@
             <x-label class="mb-1">
                 Resumen
             </x-label>
-            <x-textarea 
+            <x-textarea
             name="excerpt"
             class="block w-full" rows="4">
                 {{ old('excerpt', $post->excerpt) }}
@@ -95,11 +95,16 @@
             <x-label class="mb-1">
                 Cuerpo
             </x-label>
-            <x-textarea 
-             name="body"
-             class="block w-full" rows="12">
-                {{ old('body', $post->body) }}
-            </x-textarea>
+
+            <div class="ckeditor">
+                <x-textarea  
+                    id="editor"
+                    name="body"
+                    class="block w-full" rows="12">
+                        {{ old('body', $post->body) }}
+                </x-textarea>
+            </div>
+
         </div>
         
         <div class="mb-4">    
@@ -161,18 +166,14 @@
         }
     });
         });
-     </script>
-     <script>
+    
          function deletePost() {
      
              form = document.getElementById('formDelete');
              form.submit();
          }
  
-     </script>
-
-
-     <script>
+   
         function previewImage(event, querySelector){
 
             //Recuperamos el input que desencadeno la acción
@@ -194,6 +195,28 @@
             $imgPreview.src = objectURL;
                     
         }
+        //CkEditor
+      
+        ClassicEditor
+            .create( document.querySelector( '#editor' ), {
+                simpleUpload: {
+            // The URL that the images are uploaded to.
+            uploadUrl: "{{ route('images.upload') }}",
+
+            // Enable the XMLHttpRequest.withCredentials property.
+            withCredentials: true,
+
+            // Headers sent along with the XMLHttpRequest to the upload server.
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            }
+        }
+            } )
+            .catch( error => {
+                console.error( error );
+        } );
+
+
      </script>
    @endpush
 </x-admin-layout>
