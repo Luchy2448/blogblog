@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,4 @@ Route::get('prueba', function(){
     }
     return $path;
 });
+Route::post('images/upload', [ImageController::class, 'upload'])->name('images.upload');
