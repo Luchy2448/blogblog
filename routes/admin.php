@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
@@ -19,4 +20,8 @@ Route::resource('/categories', CategoryController::class)
             
 //POST
 Route::resource('/posts', PostController::class)
-               ->except('show');               
+               ->except('show');     
+               
+//Roles
+Route::resource('/roles', RoleController::class)
+               ->except('show');                   

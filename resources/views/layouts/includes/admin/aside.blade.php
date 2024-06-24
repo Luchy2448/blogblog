@@ -17,6 +17,12 @@
               'url' => route('admin.posts.index'),
               'active' => request()->routeIs('admin.posts.*'),
               'icon' => 'fa-solid fa-newspaper'
+          ],
+          [
+              'name' => 'Roles',
+              'url' => route('admin.roles.index'),
+              'active' => request()->routeIs('admin.roles.*'),
+              'icon' => 'fa-solid fa-user-tag'
           ]
       ]
     
