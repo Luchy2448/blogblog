@@ -47,16 +47,17 @@ class Post extends Model
             // get: fn () => $this->image_path ?? 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg'
             get: function()
             {
-             if($this->image_path)
-             {
-                if(substr($this->image_path, 0, 8) === 'https://')
-                    {
-                        return $this->image_path;
-                    }
-                    return Storage::url($this->image_path);                
-             }else{
-                return 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
-             }
+            //  if($this->image_path)
+            //  {
+            //     if(substr($this->image_path, 0, 8) === 'https://')
+            //         {
+            //             return $this->image_path;
+            //         }
+            //         return Storage::url($this->image_path);                
+            //  }else{
+            //     return 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
+            //  }
+            return $this->image_path ? Storage::url($this->image_path) : 'https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg';
             }
         );
     }
@@ -81,4 +82,6 @@ class Post extends Model
     public function comments(){
         return $this->morphMany(Comment::class, 'commentable');
     }
+    // relacion uno a muchos polimorfica
+   
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ImageController;
@@ -28,11 +29,19 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
-Route::get('prueba', function(){
-    $path = "posts/articulo-de-prueba.png";
-    if(Storage::exists($path)){
-      $path = str_replace('.png', '-copia.png', $path);
-    }
-    return $path;
-});
+// Route::get('prueba', function(){
+//     $path = "posts/articulo-de-prueba.png";
+//     if(Storage::exists($path)){
+//       $path = str_replace('.png', '-copia.png', $path);
+//     }
+//     return $path;
+// });
 Route::post('images/upload', [ImageController::class, 'upload'])->name('images.upload');
+
+Route::get('prueba', function(){
+    
+    $files = Storage::files('images');
+    $images = Image::plunk('path')->toArray();
+    
+    Storage::delete(array_diff($files, $images));    
+});

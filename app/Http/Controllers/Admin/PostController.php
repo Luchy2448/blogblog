@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Tag;
 use App\Models\Post;
+use App\Models\Image;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -17,7 +19,8 @@ class PostController extends Controller
     public function index()
 
     {   
-        $posts = Post::latest()
+        $posts = Post::where('user_id', auth()->id())
+                     ->latest()
                      ->paginate(10);
         return view('admin.posts.index', compact('posts'));
     }
@@ -56,7 +59,15 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
-    {   $categories = Category::all();
+    {   
+        // usamos este para saber quien esta intentando editar el post que no le corresponde
+        // if(!Gate::allows('author', $post)){
+        //     abort(403, 'No eres el autor de este post');
+        // }
+        // y usamos este para mostrar un mensaje
+        $this->authorize('author', $post);
+        
+        $categories = Category::all();
 
 
         return view('admin.posts.edit', compact('post', 'categories'));
@@ -69,7 +80,7 @@ class PostController extends Controller
     {
         //return  $request->all();
 
-       
+    //    dd($request->all());
         $request->validate([
             'title' => 'required',
             'slug' => 'required|unique:posts,slug,' . $post->id,
@@ -81,6 +92,38 @@ class PostController extends Controller
             'tags' => 'nullable|array',
             'image' => 'nullable|image',
         ]);
+
+   
+        $old_images = $post->images()->pluck('path')->toArray();
+
+        $re_extractImages = '/src="["\']([^ ^"^\']*)["\']/ims';
+
+        preg_match_all($re_extractImages, $request->body, $matches);
+        $images = $matches[1];
+
+        foreach($images as $key => $image){
+
+            $images[$key] = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+        }
+
+        $new_images = array_diff($images, $old_images);
+        // dd ($new_images);
+        $deleted_images = array_diff($old_images, $images);
+// dd ($new_images);
+        foreach($new_images as $image){
+
+            $post->images()->create([
+                'path' => $image
+            ]);
+            dd ($image);
+        }
+
+        foreach($deleted_images as $image){
+            Storage::delete($image);
+            Image::where('path', $image)->delete();
+            // $post->images()->where('path', $image)->delete();
+        }
+
         $data = $request->all();
 
         $tags = [];
@@ -105,8 +148,8 @@ class PostController extends Controller
     $file_name = $request->slug . '.' . $request->file('image')->getClientOriginalExtension();
         //     // return $file_name; 
           
-        //    $data['image_path'] = Storage::putFileAs('posts', $request->image, $file_name);
-        $data['image_path'] = $request->file('image')->storeAs('posts', $file_name);
+        $data['image_path'] = Storage::putFileAs('posts', $request->image, $file_name);
+        // $data['image_path'] = $request->file('image')->storeAs('posts', $file_name);
     }
 
         $post->update($data);
