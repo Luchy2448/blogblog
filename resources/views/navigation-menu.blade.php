@@ -9,7 +9,8 @@
             'name' => 'Articulos',
             'url' => route('dashboard'),
             'active' => false
-        ]
+        ],
+        
     ]
 @endphp
 

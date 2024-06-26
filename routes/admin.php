@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PermissionController;
 
 Route::get('/', function () {
 
@@ -25,3 +26,6 @@ Route::resource('/posts', PostController::class)
 //Roles
 Route::resource('/roles', RoleController::class)
                ->except('show');                   
+//Permission
+Route::resource('/permissions', PermissionController::class)
+->except('show');   

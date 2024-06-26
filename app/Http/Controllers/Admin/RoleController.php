@@ -94,8 +94,8 @@ class RoleController extends Controller
 
         session()->flash('swal', [
             'icon' => 'success',
-            'title' => '¡Bienfeito!',
-            'text' => 'El rol se elimino correctamente',
+            'title' => '¡Bien hecho!',
+            'text' => 'El rol se eliminó correctamente',
         ]);
         
         return redirect()->route('admin.roles.index');
