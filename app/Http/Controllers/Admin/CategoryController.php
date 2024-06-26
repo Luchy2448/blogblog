@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
+    // Proteger permisos el constructor desde aqui nos permite restringir ciertas funciones
+    // public function __construct()
+    // {
+    //     $this->middleware(['can:Gestion de categorías']);
+    // }
     /**
      * Display a listing of the resource.
      */
