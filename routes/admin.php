@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PermissionController;
 
@@ -28,4 +29,6 @@ Route::resource('/roles', RoleController::class)
                ->except('show');                   
 //Permission
 Route::resource('/permissions', PermissionController::class)
-->except('show');   
+                ->except('show');   
+Route::resource('/users', UserController::class)
+                ->only('index', 'edit', 'update', 'destroy');
