@@ -16,7 +16,22 @@
             value="{{ old('name', $role->name) }}"
             />
           </div>
-        <div class="flex">
+          <div class="mb-4">
+               <ul>
+                   @foreach ($permissions as $permission)
+                       <li>
+                           <label>
+                            <x-checkbox type="checkbox"
+                            name="permissions[]" 
+                            value="{{ $permission->id }}"
+                            :checked="in_array($permission->id, old('permissions', $role->permissions->pluck('id')->toArray()))"/>
+                            {{ $permission->name }}
+                           </label>
+                       </li>
+                   @endforeach  
+               </ul>
+          </div>
+        <div class="flex">  
 
             <x-button>Actualizar rol</x-button>
             <!-- Botón de eliminar -->
