@@ -21,6 +21,10 @@ class Post extends Model
         'published',
         'image_path',
     ];
+    protected $casts = [
+        'published' => 'boolean',
+        'published_at' => 'datetime',
+    ];
     //manipulación del titulo
 
     protected function title(): Attribute
