@@ -1,15 +1,15 @@
 @php
     $links = [
         [
-            'name' => 'Home',
+            'name' => 'Dashboard',
             'url' => route('dashboard'),
             'active' => request()->routeIs('dashboard')
         ],
-        // [
-        //     'name' => 'Articulos',
-        //     'url' => route('dashboard'),
-        //     'active' => false
-        // ],
+        [
+            'name' => 'Articulos',
+            'url' => route('dashboard'),
+            'active' => false
+        ],
         
     ]
 @endphp

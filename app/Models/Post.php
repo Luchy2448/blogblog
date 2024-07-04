@@ -86,6 +86,10 @@ class Post extends Model
     public function comments(){
         return $this->morphMany(Comment::class, 'commentable');
     }
-    // relacion uno a muchos polimorfica
+    
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
    
 }

@@ -3,6 +3,7 @@
 use App\Models\Image;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\WelcomeController;
 
@@ -17,7 +18,9 @@ use App\Http\Controllers\WelcomeController;
 |
 */
 
-Route::get('/home', WelcomeController::class)->name('home');
+Route::get('/', WelcomeController::class)->name('dashboard');
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::middleware([
     'auth:sanctum',

@@ -11,6 +11,7 @@ class WelcomeController extends Controller
 
         $posts = Post::where('published', true)
                 ->orderBy('published_at', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(10);
         return view('welcome', compact('posts'));
     }
