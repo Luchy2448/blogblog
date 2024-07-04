@@ -7,8 +7,8 @@
         ],
         [
             'name' => 'Articulos',
-            'url' => route('dashboard'),
-            'active' => false
+            'url' => route('articulos'),
+            'active' => request()->routeIs('articulos')
         ],
         
     ]

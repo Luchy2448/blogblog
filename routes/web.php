@@ -18,7 +18,7 @@ use App\Http\Controllers\WelcomeController;
 |
 */
 
-Route::get('/', WelcomeController::class)->name('dashboard');
+Route::get('/articulos', WelcomeController::class)->name('articulos');
 
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
