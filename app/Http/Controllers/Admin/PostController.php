@@ -16,11 +16,12 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(){
 
-    {   
-        $posts = Post::where('user_id', auth()->id())
-                     ->latest()
+        
+    // Without GlobalScope we need to use ->where('user_id', auth()->id())
+            //With GlobalScope
+            $posts = Post::orderBy('id', 'desc')
                      ->paginate(10);
         return view('admin.posts.index', compact('posts'));
     }
@@ -59,14 +60,7 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
-    {   
-        // usamos este para saber quien esta intentando editar el post que no le corresponde
-        // if(!Gate::allows('author', $post)){
-        //     abort(403, 'No eres el autor de este post');
-        // }
-        // y usamos este para mostrar un mensaje
-        $this->authorize('author', $post);
-        
+    {
         $categories = Category::all();
 
 

@@ -1,14 +1,14 @@
 @php
     $links = [
         [
-            'name' => 'Dashboard',
-            'url' => route('dashboard'),
-            'active' => request()->routeIs('dashboard')
+            'name' => 'Home',
+            'url' => route('home'),
+            'active' => request()->routeIs('home')
         ],
-        [
-            'name' => 'Articulos',
-            'url' => route('articulos'),
-            'active' => request()->routeIs('articulos')
+          [
+            'name' => 'Contacto',
+            'url' => route('contacts.index'),
+            'active' => request()->routeIs('contacts.index')
         ],
         
     ]
