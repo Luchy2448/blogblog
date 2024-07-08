@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\WelcomeController;
 
 /*
@@ -18,9 +19,16 @@ use App\Http\Controllers\WelcomeController;
 |
 */
 
-Route::get('/articulos', WelcomeController::class)->name('articulos');
+//Home
+Route::get('/home', WelcomeController::class)->name('home');
 
+//Posts
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+//Contact
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
+
 
 Route::middleware([
     'auth:sanctum',
@@ -47,3 +55,5 @@ Route::get('prueba', function(){
     
     Storage::delete(array_diff($files, $images));    
 });
+
+
